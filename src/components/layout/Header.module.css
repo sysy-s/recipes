@@ -1,0 +1,85 @@
+.wrapper {
+  height: 20%;
+  width: 100%;
+  background-color: rgba(100,172,139,1);
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchbar {
+  display: flex;
+  width: 100%;
+}
+
+.searchbar form {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.search {
+  padding: 5px;
+  font-size: 20px;
+  border: 3px solid white;
+  border-radius: 5px 0px 0px 5px;
+}
+
+.btn {
+  padding: 5px;
+  font-size: 20px;
+  border: 3px solid white;
+  border-radius: 0px 5px 5px 0px;
+  background-color: rgba(100,172,139,1);
+  color: white;
+}
+
+.btn:hover {
+  background-color: rgba(195,237,175,0.3);
+  cursor: pointer;
+}
+
+.logo {
+  float: left;
+  font-size: 40px;
+  padding: 20px;
+  padding-left: 20px;
+}
+
+.logo a {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.right {
+  font-size: 24px;
+  float: right;
+  padding: 10px;
+  display: flex;
+}
+
+.right div {
+  margin: auto;
+  padding: 10px;
+  white-space: nowrap;
+}
+
+.right div a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+
+@media (max-width: 1000px) {
+  .wrapper {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .searchbar form{
+    margin: auto;
+  }
+}

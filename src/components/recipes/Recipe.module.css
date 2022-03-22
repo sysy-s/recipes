@@ -1,0 +1,18 @@
+.wrapper {
+    margin-top: 15px;
+}
+
+.wrapper:hover {
+    cursor: pointer;
+}
+
+.imagewrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 100%;
+    float: right;
+    border-radius: 10px;
+}
