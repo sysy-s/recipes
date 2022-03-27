@@ -8,3 +8,32 @@
     width: 100%;
     border-radius: 10px;
 }
+
+.delbtn {
+    margin: 20px;
+    padding: 10px;
+    font-size: 24px;
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 10px;
+    transition: transform 200ms ease-in-out;
+}
+
+.upbtn {
+    margin: 20px;
+    margin-left: 0;
+    padding: 10px;
+    font-size: 24px;
+    color: white;
+    background-color: orange;
+    border: none;
+    border-radius: 10px;
+    border: 3px solid white;
+    transition: transform 200ms ease-in-out;
+
+}
+
+.upbtn:hover, .delbtn:hover {
+    transform: translateY(-10px);
+}

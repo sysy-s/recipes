@@ -3,11 +3,12 @@ import axios from "axios";
 import { API } from "../../Api";
 import Recipe from "./Recipe";
 import { SearchContext } from "../Context";
+import styles from './RecipeList.module.css';
 
 export default function RecipeList() {
   const [recipes, setRecipes] = useState([]);
   const {searchQuery, setSearchQuery} = useContext(SearchContext);
-
+  console.log(recipes);
   function getRecipesVanilla() {
     axios.get(`${API}/recipes/all`).then((res) => {
       setRecipes(res.data);
@@ -33,8 +34,10 @@ export default function RecipeList() {
             id={recipe._id}
             title={recipe.title}
             image={recipe.image}
+            className={styles.recipe}
           />
         ))}
+        {(!recipes.length || false) && <h1 className={styles.blank}>No recipes here</h1>}
     </>
   );
 }

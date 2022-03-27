@@ -7,6 +7,7 @@
   overflow: hidden;
   display: flex;
   justify-content: space-between;
+  z-index: 100;
 }
 
 .searchbar {
@@ -33,6 +34,7 @@
   border-radius: 0px 5px 5px 0px;
   background-color: rgba(100,172,139,1);
   color: white;
+  transition: background-color 200ms ease-in-out;
 }
 
 .btn:hover {
@@ -45,6 +47,7 @@
   font-size: 40px;
   padding: 20px;
   padding-left: 20px;
+  transition: transform 200ms ease-in-out;
 }
 
 .logo a {
@@ -52,6 +55,10 @@
   color: white;
   text-decoration: none;
   padding: 10px;
+}
+
+.logo:hover {
+  transform: scale(1.2, 1.2);
 }
 
 .right {

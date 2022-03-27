@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import { useContext, useRef } from "react";
 import { SearchContext } from "../Context";
 
-export default function Header() {
+export default function Header(props) {
   const nav = useNavigate();
   const searchRef = useRef();
   const { setSearchQuery } = useContext(SearchContext);
@@ -17,7 +17,9 @@ export default function Header() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.logo}>
-        <Link to="/" onClick={(e) => setSearchQuery("")}>LOGO</Link>
+        <Link to="/" onClick={(e) => setSearchQuery("")}>
+          Logo
+        </Link>
       </div>
       <div className={styles.searchbar}>
         <form>
@@ -34,14 +36,16 @@ export default function Header() {
         </form>
       </div>
       <div className={styles.right}>
-        <div>
-          <Link to="/">Dummy link</Link>
-        </div>
-        <div>
-          <Link to="/add">
-            New Recipe
-          </Link>
-        </div>
+        {props.admin && (
+          <>
+            {/* <div>
+              <Link to="/">Dummy link</Link>
+            </div> */}
+            <div>
+              <Link to="/admin/add">New Recipe</Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

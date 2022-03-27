@@ -1,11 +1,11 @@
 import Header from "./Header";
 import Block from "./Block";
 
-export default function Layout({ children }) {
+export default function Layout(props) {
   return (
     <>
       <Header />
-      <Block>{children}</Block>
+      <Block>{props.children}</Block>
     </>
   );
 }

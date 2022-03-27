@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { API } from "../../Api";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./RecipeDetail.module.css";
 
-export default function RecipeDetail() {
+export default function RecipeDetail(props) {
+  const nav = useNavigate();
   const [recipe, setRecipe] = useState({
     title: "",
     ingredients: [],
@@ -16,9 +17,15 @@ export default function RecipeDetail() {
   function getRecipe() {
     axios.get(`${API}/recipes/${params.id}`).then((res) => {
       const recipe = res.data;
-      console.log(recipe);
       setRecipe(recipe);
     });
+  }
+
+  function deleteRecipe() {
+    axios
+      .delete(`${API}/recipes/${params.id}`)
+      .then((res) => nav("/"))
+      .catch(() => nav("/"));
   }
 
   useEffect(() => {
@@ -30,7 +37,11 @@ export default function RecipeDetail() {
       {recipe.title && (
         <>
           <div className={styles.imagewrapper}>
-            <img src={`${API}/${recipe.image}`} className={styles.image} alt=''/>
+            <img
+              src={`${API}/${recipe.image}`}
+              className={styles.image}
+              alt=""
+            />
           </div>
           <h1>{recipe.title}</h1>
           <hr />
@@ -47,6 +58,19 @@ export default function RecipeDetail() {
               <li key={step.substring(0, 5)}>{step}</li>
             ))}
           </ol>
+          {props.admin && (
+            <>
+              <button className={styles.delbtn} onClick={deleteRecipe}>
+                Delete
+              </button>
+              <button
+                className={styles.upbtn}
+                onClick={(e) => nav(`/admin/${params.id}/update`)}
+              >
+                Update
+              </button>
+            </>
+          )}
         </>
       )}
       {!recipe.title && (

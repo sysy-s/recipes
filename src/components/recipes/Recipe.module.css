@@ -11,8 +11,14 @@
     justify-content: center;
 }
 
+.title {
+    padding: 15px;
+    padding-top: 0px;
+}
+
 .thumbnail {
     width: 100%;
     float: right;
     border-radius: 10px;
+    z-index: 1;
 }

@@ -1,18 +1,26 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { API } from "../../../Api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import styles from "./NewRecipeForm.module.css";
 
 export default function NewRecipeForm() {
   const nav = useNavigate();
+  const params = useParams();
   const titleRef = useRef();
-  const [image, setImage] = useState();
   const [ingredientFields, setIngredientFields] = useState([
     { ingredient: "" },
   ]);
   const [stepFields, setStepFields] = useState([{ step: "" }]);
+  const [recipeData, setRecipeData] = useState({
+    title: "",
+    ingredients: [],
+    steps: [],
+    image: "",
+  });
+  const [image, setImage] = useState();
+
   const [message, setMessage] = useState("");
 
   function imageChange(e) {
@@ -48,14 +56,13 @@ export default function NewRecipeForm() {
 
   function removeStep(e) {
     e.preventDefault();
-    console.log();
     setStepFields(stepFields.slice(0, stepFields.length - 1));
   }
 
   function postForm(data) {
     axios({
-      url: `${API}/recipes/add`,
-      method: "post",
+      url: `${API}/recipes/${params.id}`,
+      method: "put",
       data: data,
       headers: { "Content-type": "multipart/form-data" },
     })
@@ -64,6 +71,18 @@ export default function NewRecipeForm() {
         nav(`/${id}`);
       })
       .catch(() => setMessage("Invalid file type"));
+  }
+
+  function getRecipeData() {
+    axios.get(`${API}/recipes/${params.id}`).then((res) => {
+      const recipe = res.data;
+      setRecipeData(recipe);
+      console.log(recipeData);
+      setIngredientFields(
+        recipe.ingredients.map((ingredient) => ({ ingredient: ingredient }))
+      );
+      setStepFields(recipe.steps.map((step) => ({ step: step })));
+    });
   }
 
   function submitForm(e) {
@@ -113,14 +132,16 @@ export default function NewRecipeForm() {
 
   useEffect(() => {
     setMessage("");
+    getRecipeData();
   }, []);
 
   return (
     <>
       <form method="post" className={styles.recipeform}>
-        <h1>New Recipe</h1>
+        <h1>Update Recipe</h1>
+
         <label htmlFor="title">Title</label>
-        <input type="text" name="title" ref={titleRef} />
+        <input type="text" name="title" ref={titleRef} defaultValue={recipeData.title} />
 
         <label htmlFor="ingredient">Ingredients</label>
         <div className={styles.ingredients}>
@@ -132,14 +153,19 @@ export default function NewRecipeForm() {
                   name="ingredient"
                   key={index}
                   onChange={(e) => ingredientChange(index, e)}
+                  defaultValue={input.ingredient}
                 />
               </>
             ))}
         </div>
         <div>
-          <button onClick={addIngredient} className={styles.addbtn}>+</button>
+          <button onClick={addIngredient} className={styles.addbtn}>
+            +
+          </button>
           {ingredientFields[1] && (
-            <button onClick={removeIngredient} className={styles.removebtn}>-</button>
+            <button onClick={removeIngredient} className={styles.removebtn}>
+              -
+            </button>
           )}
         </div>
 
@@ -152,13 +178,20 @@ export default function NewRecipeForm() {
                   name="step"
                   key={index}
                   onChange={(e) => stepChange(e, index)}
+                  defaultValue={input.step}
                 />
               </>
             ))}
         </div>
         <div>
-          <button onClick={addStep} className={styles.addbtn}>+</button>
-          {stepFields[1] && <button onClick={removeStep} className={styles.removebtn}>-</button>}
+          <button onClick={addStep} className={styles.addbtn}>
+            +
+          </button>
+          {stepFields[1] && (
+            <button onClick={removeStep} className={styles.removebtn}>
+              -
+            </button>
+          )}
         </div>
 
         <label htmlFor="image">Image</label>
@@ -168,7 +201,9 @@ export default function NewRecipeForm() {
           className={styles.imageinput}
           onChange={imageChange}
         />
-        <button onClick={submitForm} className={styles.submitbtn}>Submit</button>
+        <button onClick={submitForm} className={styles.submitbtn}>
+          Submit
+        </button>
       </form>
       {message && <div className={styles.message}>{message}</div>}
     </>
