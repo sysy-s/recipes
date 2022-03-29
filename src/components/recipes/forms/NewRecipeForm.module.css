@@ -6,7 +6,7 @@
     flex-direction: column;
 }
 
-.steps, .ingredients {
+.steps, .ingredients, .tags {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,7 +16,7 @@ label {
     font-size: 24px;
 }
 
-.recipeform input, .recipeform textarea {
+.recipeform input, .recipeform textarea, .tags select {
     padding: 10px;
     font-size: 20px;
     margin: 5px;

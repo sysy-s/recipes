@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { API } from "../../../Api";
 import { useNavigate } from "react-router-dom";
+import { Tags } from "../../Tags";
 
 import styles from "./NewRecipeForm.module.css";
 
@@ -13,10 +14,28 @@ export default function NewRecipeForm() {
     { ingredient: "" },
   ]);
   const [stepFields, setStepFields] = useState([{ step: "" }]);
+  const [tags, setTags] = useState([{ tag: "" }]);
   const [message, setMessage] = useState("");
 
   function imageChange(e) {
     setImage(e.target.files[0]);
+  }
+
+  function tagChange(index, e) {
+    const data = [...tags];
+    data[index][e.target.name] = e.target.value;
+    setTags(data);
+    console.log(tags);
+  }
+
+  function addTag(e) {
+    e.preventDefault();
+    setTags([...tags, { tag: "" }]);
+  }
+
+  function removeTag(e) {
+    e.preventDefault();
+    setTags(tags.slice(0, tags.length - 1));
   }
 
   function ingredientChange(index, e) {
@@ -48,7 +67,6 @@ export default function NewRecipeForm() {
 
   function removeStep(e) {
     e.preventDefault();
-    console.log();
     setStepFields(stepFields.slice(0, stepFields.length - 1));
   }
 
@@ -70,6 +88,7 @@ export default function NewRecipeForm() {
     e.preventDefault();
     const ingredients = ingredientFields.map((field) => field.ingredient);
     const steps = stepFields.map((field) => field.step);
+    const tagValues = tags.map((field) => field.tag);
     const title = titleRef.current.value;
     let errorOccured = false;
 
@@ -95,6 +114,12 @@ export default function NewRecipeForm() {
         formData.append("steps", step);
       } else {
         errorOccured = true;
+      }
+    });
+
+    tagValues.forEach((tag) => {
+      if (tag) {
+        formData.append("tags", tag);
       }
     });
 
@@ -137,9 +162,13 @@ export default function NewRecipeForm() {
             ))}
         </div>
         <div>
-          <button onClick={addIngredient} className={styles.addbtn}>+</button>
+          <button onClick={addIngredient} className={styles.addbtn}>
+            +
+          </button>
           {ingredientFields[1] && (
-            <button onClick={removeIngredient} className={styles.removebtn}>-</button>
+            <button onClick={removeIngredient} className={styles.removebtn}>
+              -
+            </button>
           )}
         </div>
 
@@ -157,8 +186,14 @@ export default function NewRecipeForm() {
             ))}
         </div>
         <div>
-          <button onClick={addStep} className={styles.addbtn}>+</button>
-          {stepFields[1] && <button onClick={removeStep} className={styles.removebtn}>-</button>}
+          <button onClick={addStep} className={styles.addbtn}>
+            +
+          </button>
+          {stepFields[1] && (
+            <button onClick={removeStep} className={styles.removebtn}>
+              -
+            </button>
+          )}
         </div>
 
         <label htmlFor="image">Image</label>
@@ -168,7 +203,41 @@ export default function NewRecipeForm() {
           className={styles.imageinput}
           onChange={imageChange}
         />
-        <button onClick={submitForm} className={styles.submitbtn}>Submit</button>
+        <br />
+        <label htmlFor="tags">Tags (optional)</label>
+        <div className={styles.tags}>
+          {tags &&
+            tags.map((input, index) => (
+              <>
+                <select
+                  className={styles.tag}
+                  name="tag"
+                  key={index}
+                  onChange={(e) => tagChange(index, e)}
+                  selected="selected"
+                >
+                  <option></option>
+                  {Tags.map((tag) => (
+                    <option>{tag}</option>
+                  ))}
+                </select>
+              </>
+            ))}
+        </div>
+        <div>
+          <button onClick={addTag} className={styles.addbtn}>
+            +
+          </button>
+          {tags[1] && (
+            <button onClick={removeTag} className={styles.removebtn}>
+              -
+            </button>
+          )}
+        </div>
+
+        <button onClick={submitForm} className={styles.submitbtn}>
+          Submit
+        </button>
       </form>
       {message && <div className={styles.message}>{message}</div>}
     </>
