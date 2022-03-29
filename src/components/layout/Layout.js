@@ -4,8 +4,8 @@ import Block from "./Block";
 export default function Layout(props) {
   return (
     <>
-      <Header />
-      <Block>{props.children}</Block>
+      <Header admin={props.admin}/>
+      <Block admin={props.admin}>{props.children}</Block>
     </>
   );
 }

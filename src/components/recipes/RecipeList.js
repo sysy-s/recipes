@@ -8,7 +8,6 @@ import styles from './RecipeList.module.css';
 export default function RecipeList() {
   const [recipes, setRecipes] = useState([]);
   const {searchQuery, setSearchQuery} = useContext(SearchContext);
-  console.log(recipes);
   function getRecipesVanilla() {
     axios.get(`${API}/recipes/all`).then((res) => {
       setRecipes(res.data);
@@ -30,7 +29,7 @@ export default function RecipeList() {
       {recipes &&
         recipes.map((recipe) => (
           <Recipe
-            key={recipe.id}
+            key={recipe._id}
             id={recipe._id}
             title={recipe.title}
             image={recipe.image}

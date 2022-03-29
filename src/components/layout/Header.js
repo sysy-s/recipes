@@ -11,13 +11,13 @@ export default function Header(props) {
   function searchSubmit(e) {
     e.preventDefault();
     setSearchQuery(searchRef.current.value);
-    return nav("/");
+    return props.admin ? nav("/admin") : nav('/');
   }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.logo}>
-        <Link to="/" onClick={(e) => setSearchQuery("")}>
+        <Link to={props.admin ? '/admin' : '/'} onClick={(e) => setSearchQuery("")}>
           Logo
         </Link>
       </div>
@@ -38,9 +38,6 @@ export default function Header(props) {
       <div className={styles.right}>
         {props.admin && (
           <>
-            {/* <div>
-              <Link to="/">Dummy link</Link>
-            </div> */}
             <div>
               <Link to="/admin/add">New Recipe</Link>
             </div>

@@ -5,24 +5,60 @@ import RecipeDetail from "./components/recipes/RecipeDetail";
 import RecipeList from "./components/recipes/RecipeList";
 import UpdateRecipeForm from "./components/recipes/forms/UpdateRecipeForm";
 import SearchProvider from "./components/Context";
-import RequireToken from "./components/Auth";
 
 function App() {
   return (
     <SearchProvider>
-      <Layout>
-        <Routes>
-          <Route path="/admin" element={<RecipeList admin={true} />} />
-          <Route path="/admin/add" element={<NewRecipeForm admin={true} />} />
-          <Route path="/admin/:id" element={<RecipeDetail admin={true} />} />
-          <Route
-            path="/admin/:id/update"
-            element={<UpdateRecipeForm admin={true} />}
-          />
-          <Route path="/" element={<RecipeList admin={false} />} />
-          <Route path="/:id" element={<RecipeDetail admin={false} />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route
+          path="/admin"
+          element={
+            <Layout admin={true}>
+              <RecipeList admin={true} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin/add"
+          element={
+            <Layout admin={true}>
+              <NewRecipeForm admin={true} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin/:id"
+          element={
+            <Layout admin={true}>
+              <RecipeDetail admin={true} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin/:id/update"
+          element={
+            <Layout admin={true}>
+              <UpdateRecipeForm admin={true} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <Layout admin={false}>
+              <RecipeList admin={false} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/:id"
+          element={
+            <Layout admin={false}>
+              <RecipeDetail admin={false} />
+            </Layout>
+          }
+        />
+      </Routes>
     </SearchProvider>
   );
 }

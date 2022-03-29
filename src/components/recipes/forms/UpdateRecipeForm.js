@@ -68,7 +68,7 @@ export default function NewRecipeForm() {
     })
       .then((res) => {
         const id = res.data._id;
-        nav(`/${id}`);
+        nav(`/admin/${id}`);
       })
       .catch(() => setMessage("Invalid file type"));
   }
