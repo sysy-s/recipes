@@ -12,26 +12,20 @@ export default function RecipeList() {
   const { tagsApplied } = useContext(TagsContext);
 
   function getRecipes() {
-    let query = '?';
+    let query = "?";
     if (searchQuery) {
-      query = query + 'search=' + searchQuery.replace(' ', '%20');
+      query = query + "search=" + searchQuery.replace(" ", "%20");
     }
 
-    if (tagsApplied[0] !== '') {
-      tagsApplied.forEach(tag => {
-        query = query + '&tags[]=' + tag.replace(' ', '%20');
+    if (tagsApplied[0] !== "") {
+      tagsApplied.forEach((tag) => {
+        query = query + "&tags[]=" + tag.replace(" ", "%20");
       });
     }
-
-    if (query.length > 1) {
-      axios.get(`${API}/recipes/all${query}`).then((res) => {
-        setRecipes(res.data);
-      });
-    } else {
-      axios.get(`${API}/recipes/all`).then((res) => {
-        setRecipes(res.data);
-      });
-    }
+    console.log(query);
+    axios.get(`${API}/recipes/all${query}`).then((res) => {
+      setRecipes(res.data);
+    });
   }
 
   useEffect(() => {

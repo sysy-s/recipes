@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { API } from "../../../Api";
 import { useNavigate, useParams } from "react-router-dom";
+import { Tags } from "../../Tags";
 
 import styles from "./NewRecipeForm.module.css";
 
@@ -13,18 +14,35 @@ export default function NewRecipeForm() {
     { ingredient: "" },
   ]);
   const [stepFields, setStepFields] = useState([{ step: "" }]);
+  const [tagFields, setTagFields] = useState([]);
   const [recipeData, setRecipeData] = useState({
     title: "",
     ingredients: [],
     steps: [],
     image: "",
+    tags: [],
   });
   const [image, setImage] = useState();
-
   const [message, setMessage] = useState("");
 
   function imageChange(e) {
     setImage(e.target.files[0]);
+  }
+
+  function tagChange(index, e) {
+    const data = [...tagFields];
+    data[index][e.target.name] = e.target.value;
+    setTagFields(data);
+  }
+
+  function addTag(e) {
+    e.preventDefault();
+    setTagFields([...tagFields, { tag: "" }]);
+  }
+
+  function removeTag(e) {
+    e.preventDefault();
+    setTagFields(tagFields.slice(0, tagFields.length - 1));
   }
 
   function ingredientChange(index, e) {
@@ -82,6 +100,9 @@ export default function NewRecipeForm() {
         recipe.ingredients.map((ingredient) => ({ ingredient: ingredient }))
       );
       setStepFields(recipe.steps.map((step) => ({ step: step })));
+      if (recipe.tags) {
+        setTagFields(recipe.tags.map(tag => ({tag: tag})));
+      }
     });
   }
 
@@ -89,6 +110,7 @@ export default function NewRecipeForm() {
     e.preventDefault();
     const ingredients = ingredientFields.map((field) => field.ingredient);
     const steps = stepFields.map((field) => field.step);
+    const tags = tagFields.map((field) => field.tag);
     const title = titleRef.current.value;
     let errorOccured = false;
 
@@ -123,6 +145,14 @@ export default function NewRecipeForm() {
       errorOccured = true;
     }
 
+    tags.forEach((tag) => {
+      if (tag) {
+        formData.append("tags", tag);
+      } else {
+        errorOccured = true;
+      }
+    });
+
     if (!errorOccured) {
       postForm(formData);
     } else {
@@ -141,7 +171,12 @@ export default function NewRecipeForm() {
         <h1>Update Recipe</h1>
 
         <label htmlFor="title">Title</label>
-        <input type="text" name="title" ref={titleRef} defaultValue={recipeData.title} />
+        <input
+          type="text"
+          name="title"
+          ref={titleRef}
+          defaultValue={recipeData.title}
+        />
 
         <label htmlFor="ingredient">Ingredients</label>
         <div className={styles.ingredients}>
@@ -201,6 +236,38 @@ export default function NewRecipeForm() {
           className={styles.imageinput}
           onChange={imageChange}
         />
+
+        <label htmlFor="tags">Tags (optional)</label>
+        <div className={styles.tags}>
+          {tagFields &&
+            tagFields.map((input, index) => (
+              <>
+                <input
+                  list="tags"
+                  name="tag"
+                  onChange={(e) => tagChange(index, e)}
+                  defaultValue={input.tag}
+                ></input>
+                <datalist className={styles.tag} id="tags" key={index}>
+                  <option></option>
+                  {Tags.map((tag) => (
+                    <option>{tag}</option>
+                  ))}
+                </datalist>
+              </>
+            ))}
+        </div>
+        <div>
+          <button onClick={addTag} className={styles.addbtn}>
+            +
+          </button>
+          {tagFields[0] && (
+            <button onClick={removeTag} className={styles.removebtn}>
+              -
+            </button>
+          )}
+        </div>
+
         <button onClick={submitForm} className={styles.submitbtn}>
           Submit
         </button>

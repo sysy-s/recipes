@@ -11,7 +11,7 @@ export default function Header(props) {
   const [tagsVisibility, setTagsVisibility] = useState(false);
   const searchRef = useRef();
   const { setSearchQuery } = useContext(SearchContext);
-  const { tagsApplied } = useContext(TagsContext);
+  const { tagsApplied, setTagsApplied } = useContext(TagsContext);
 
   function searchSubmit(e) {
     e.preventDefault();
@@ -54,9 +54,14 @@ export default function Header(props) {
       <div className={styles.right}>
         <div className={styles.tags}>
           {props.list && (
-            <button className={styles.tagbtn} onClick={showHideTags}>
-              {tagsVisibility ? "Cancel" : "Filter using tags"}
-            </button>
+            <>
+              {tagsApplied[0] && (
+                <button onClick={(e) => setTagsApplied([])} className={styles.tagbtn}>Clear tags</button>
+              )}
+              <button className={styles.tagbtn} onClick={showHideTags}>
+                {tagsVisibility ? "Cancel" : "Select tags"}
+              </button>
+            </>
           )}
           <AnimatePresence>{tagsVisibility && <TagSelect />}</AnimatePresence>
         </div>

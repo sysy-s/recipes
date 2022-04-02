@@ -14,7 +14,7 @@ export default function NewRecipeForm() {
     { ingredient: "" },
   ]);
   const [stepFields, setStepFields] = useState([{ step: "" }]);
-  const [tags, setTags] = useState([{ tag: "" }]);
+  const [tagFields, setTagFields] = useState([]);
   const [message, setMessage] = useState("");
 
   function imageChange(e) {
@@ -22,19 +22,19 @@ export default function NewRecipeForm() {
   }
 
   function tagChange(index, e) {
-    const data = [...tags];
+    const data = [...tagFields];
     data[index][e.target.name] = e.target.value;
-    setTags(data);
+    setTagFields(data);
   }
 
   function addTag(e) {
     e.preventDefault();
-    setTags([...tags, { tag: "" }]);
+    setTagFields([...tagFields, { tag: "" }]);
   }
 
   function removeTag(e) {
     e.preventDefault();
-    setTags(tags.slice(0, tags.length - 1));
+    setTagFields(tagFields.slice(0, tagFields.length - 1));
   }
 
   function ingredientChange(index, e) {
@@ -87,7 +87,7 @@ export default function NewRecipeForm() {
     e.preventDefault();
     const ingredients = ingredientFields.map((field) => field.ingredient);
     const steps = stepFields.map((field) => field.step);
-    const tagValues = tags.map((field) => field.tag);
+    const tags = tagFields.map((field) => field.tag);
     const title = titleRef.current.value;
     let errorOccured = false;
 
@@ -116,17 +116,19 @@ export default function NewRecipeForm() {
       }
     });
 
-    tagValues.forEach((tag) => {
-      if (tag) {
-        formData.append("tags", tag);
-      }
-    });
-
     if (image) {
       formData.append("image", image);
     } else {
       errorOccured = true;
     }
+
+    tags.forEach((tag) => {
+      if (tag) {
+        formData.append("tags", tag);
+      } else {
+        errorOccured = true;
+      }
+    });
 
     if (!errorOccured) {
       postForm(formData);
@@ -205,15 +207,15 @@ export default function NewRecipeForm() {
         <br />
         <label htmlFor="tags">Tags (optional)</label>
         <div className={styles.tags}>
-          {tags &&
-            tags.map((input, index) => (
+          {tagFields &&
+            tagFields.map((input, index) => (
               <>
-                <datalist
-                  className={styles.tag}
+                <input
+                  list="tags"
                   name="tag"
-                  key={index}
                   onChange={(e) => tagChange(index, e)}
-                >
+                ></input>
+                <datalist className={styles.tag} id="tags" key={index}>
                   <option></option>
                   {Tags.map((tag) => (
                     <option>{tag}</option>
@@ -226,7 +228,7 @@ export default function NewRecipeForm() {
           <button onClick={addTag} className={styles.addbtn}>
             +
           </button>
-          {tags[1] && (
+          {tagFields[0] && (
             <button onClick={removeTag} className={styles.removebtn}>
               -
             </button>

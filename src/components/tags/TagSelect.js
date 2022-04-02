@@ -27,10 +27,6 @@ export default function TagSelect() {
     setTags(data);
   }
 
-  function clearTags() {
-    setTagsApplied([]);
-  }
-
   function submitTags(e) {
     e.preventDefault();
     setTagsApplied(
@@ -98,11 +94,6 @@ export default function TagSelect() {
         <button className={styles.submitbtn} onClick={submitTags}>
           Apply
         </button>
-        {tagsApplied[0] && (
-          <button onClick={clearTags} className={styles.clearbtn}>
-            Clear tags
-          </button>
-        )}
       </form>
     </motion.div>
   );
