@@ -24,7 +24,7 @@ export default function RecipeDetail(props) {
   function deleteRecipe() {
     axios
       .delete(`${API}/recipes/${params.id}`)
-      .then((res) => nav("/"))
+      .then((res) => nav("/admin"))
       .catch(() => nav("/"));
   }
 

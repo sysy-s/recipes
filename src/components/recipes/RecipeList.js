@@ -3,26 +3,40 @@ import axios from "axios";
 import { API } from "../../Api";
 import Recipe from "./Recipe";
 import { SearchContext } from "../Context";
-import styles from './RecipeList.module.css';
+import { TagsContext } from "../TagsContext";
+import styles from "./RecipeList.module.css";
 
 export default function RecipeList() {
   const [recipes, setRecipes] = useState([]);
-  const {searchQuery, setSearchQuery} = useContext(SearchContext);
-  function getRecipesVanilla() {
-    axios.get(`${API}/recipes/all`).then((res) => {
-      setRecipes(res.data);
-    });
+  const { searchQuery } = useContext(SearchContext);
+  const { tagsApplied } = useContext(TagsContext);
+
+  function getRecipes() {
+    let query = '?';
+    if (searchQuery) {
+      query = query + 'search=' + searchQuery.replace(' ', '%20');
+    }
+
+    if (tagsApplied[0] !== '') {
+      tagsApplied.forEach(tag => {
+        query = query + '&tags[]=' + tag.replace(' ', '%20');
+      });
+    }
+
+    if (query.length > 1) {
+      axios.get(`${API}/recipes/all${query}`).then((res) => {
+        setRecipes(res.data);
+      });
+    } else {
+      axios.get(`${API}/recipes/all`).then((res) => {
+        setRecipes(res.data);
+      });
+    }
   }
 
-  function getRecipesSearch() {
-    axios.get(`${API}/recipes/all?search=${searchQuery}`).then((res) => {
-      setRecipes(res.data);
-    });
-  }
-  // magic, search bar works if this runs
   useEffect(() => {
-    searchQuery ? getRecipesSearch() : getRecipesVanilla();
-  }, [searchQuery]);
+    getRecipes();
+  }, [searchQuery, tagsApplied]);
 
   return (
     <>
@@ -36,7 +50,9 @@ export default function RecipeList() {
             className={styles.recipe}
           />
         ))}
-        {(!recipes.length || false) && <h1 className={styles.blank}>No recipes here</h1>}
+      {(!recipes.length || false) && (
+        <h1 className={styles.blank}>No recipes here</h1>
+      )}
     </>
   );
 }

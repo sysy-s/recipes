@@ -25,7 +25,6 @@ export default function NewRecipeForm() {
     const data = [...tags];
     data[index][e.target.name] = e.target.value;
     setTags(data);
-    console.log(tags);
   }
 
   function addTag(e) {
@@ -209,18 +208,17 @@ export default function NewRecipeForm() {
           {tags &&
             tags.map((input, index) => (
               <>
-                <select
+                <datalist
                   className={styles.tag}
                   name="tag"
                   key={index}
                   onChange={(e) => tagChange(index, e)}
-                  selected="selected"
                 >
                   <option></option>
                   {Tags.map((tag) => (
                     <option>{tag}</option>
                   ))}
-                </select>
+                </datalist>
               </>
             ))}
         </div>
