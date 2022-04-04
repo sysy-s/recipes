@@ -45,7 +45,7 @@ export default function RecipeList() {
           />
         ))}
       {(!recipes.length || false) && (
-        <h1 className={styles.blank}>No recipes here</h1>
+        <h1 className={styles.blank}>Sadly no recipe match your search.</h1>
       )}
     </>
   );

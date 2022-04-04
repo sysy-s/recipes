@@ -1,3 +1,8 @@
 .recipe {
     background-color: aqua;
 }
+
+.blank {
+    font-weight: 300;
+    font-size: 24px;
+}

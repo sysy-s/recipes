@@ -5,6 +5,7 @@ import { SearchContext } from "../Context";
 import { TagsContext } from "../TagsContext";
 import TagSelect from "../tags/TagSelect";
 import { AnimatePresence } from "framer-motion";
+import ReactModal from "react-modal";
 
 export default function Header(props) {
   const nav = useNavigate();
@@ -56,14 +57,30 @@ export default function Header(props) {
           {props.list && (
             <>
               {tagsApplied[0] && (
-                <button onClick={(e) => setTagsApplied([])} className={styles.tagbtn}>Clear tags</button>
+                <button
+                  onClick={(e) => setTagsApplied([])}
+                  className={styles.tagbtn}
+                >
+                  Clear tags
+                </button>
               )}
               <button className={styles.tagbtn} onClick={showHideTags}>
-                {tagsVisibility ? "Cancel" : "Select tags"}
+                {tagsVisibility ? "Cancel" : "Filter with tags"}
               </button>
             </>
           )}
-          <AnimatePresence>{tagsVisibility && <TagSelect />}</AnimatePresence>
+          <AnimatePresence>
+            {tagsVisibility && (
+              <ReactModal
+                isOpen={tagsVisibility}
+                onRequestClose={(e) => setTagsVisibility(false)}
+                closeTimeoutMS={200}
+                className={styles.modal}
+              >
+                  <TagSelect />
+              </ReactModal>
+            )}
+          </AnimatePresence>
         </div>
         {props.admin && (
           <>

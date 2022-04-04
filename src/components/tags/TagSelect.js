@@ -39,9 +39,9 @@ export default function TagSelect() {
   }
 
   const variants = {
-    hidden: { opacity: 0, x: 400 },
-    visible: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 400 },
+    hidden: { opacity: 0, y: -100 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -100 },
   };
 
   const inputVariants = {
@@ -50,51 +50,51 @@ export default function TagSelect() {
   };
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      transition={{ duration: 0.5 }}
-      variants={variants}
-      className={styles.wrapper}
-    >
-      <p>Select tags</p>
-      <form className={styles.tagsform}>
-        {tags.map((tag, index) => (
-          <motion.div
-            key={index}
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.5 }}
-            variants={inputVariants}
-          >
-            <input
-              list="taglist"
-              onChange={(e) => changeTag(index, e)}
-              name="tag"
-              defaultValue={tag.tag}
-            />
-            <datalist id="taglist">
-              {Tags.map((tag) => (
-                <option value={tag} key={tag}>
-                  {tag}
-                </option>
-              ))}
-            </datalist>
-          </motion.div>
-        ))}
-        <button className={styles.addbtn} onClick={addTag}>
-          +
-        </button>
-        {tags[1] && (
-          <button className={styles.rmbtn} onClick={removeTag}>
-            -
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        transition={{ duration: 0.3 }}
+        variants={variants}
+        className={styles.wrapper}
+      >
+        <p>Select tags</p>
+        <form className={styles.tagsform}>
+          {tags.map((tag, index) => (
+            <motion.div
+              key={index}
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 0.5 }}
+              variants={inputVariants}
+            >
+              <input
+                list="taglist"
+                onChange={(e) => changeTag(index, e)}
+                name="tag"
+                defaultValue={tag.tag}
+              />
+              <datalist id="taglist">
+                {Tags.map((tag) => (
+                  <option value={tag} key={tag}>
+                    {tag}
+                  </option>
+                ))}
+              </datalist>
+            </motion.div>
+          ))}
+          <button className={styles.addbtn} onClick={addTag}>
+            +
           </button>
-        )}
-        <button className={styles.submitbtn} onClick={submitTags}>
-          Apply
-        </button>
-      </form>
-    </motion.div>
+          {tags[1] && (
+            <button className={styles.rmbtn} onClick={removeTag}>
+              -
+            </button>
+          )}
+          <button className={styles.submitbtn} onClick={submitTags}>
+            Apply
+          </button>
+        </form>
+      </motion.div>
   );
 }
