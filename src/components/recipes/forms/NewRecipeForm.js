@@ -210,17 +210,16 @@ export default function NewRecipeForm() {
           {tagFields &&
             tagFields.map((input, index) => (
               <>
-                <input
+                <select
                   list="tags"
                   name="tag"
                   onChange={(e) => tagChange(index, e)}
-                ></input>
-                <datalist className={styles.tag} id="tags" key={index}>
+                >
                   <option></option>
                   {Tags.map((tag) => (
                     <option>{tag}</option>
                   ))}
-                </datalist>
+                </select>
               </>
             ))}
         </div>

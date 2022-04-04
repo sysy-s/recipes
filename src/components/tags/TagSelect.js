@@ -23,7 +23,7 @@ export default function TagSelect() {
 
   function changeTag(index, e) {
     const data = [...tags];
-    data[index][e.target.name] = e.target.value;
+    data[index].tag = e.target.value;
     setTags(data);
   }
 
@@ -32,7 +32,7 @@ export default function TagSelect() {
     setTagsApplied(
       tags
         .filter(function (tag) {
-          return tag.tag;
+          return tag.tag !== 'Select a tag';
         })
         .map((tag) => tag.tag)
     );
@@ -50,51 +50,49 @@ export default function TagSelect() {
   };
 
   return (
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        transition={{ duration: 0.3 }}
-        variants={variants}
-        className={styles.wrapper}
-      >
-        <p>Select tags</p>
-        <form className={styles.tagsform}>
-          {tags.map((tag, index) => (
-            <motion.div
-              key={index}
-              initial="hidden"
-              animate="visible"
-              transition={{ duration: 0.5 }}
-              variants={inputVariants}
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      transition={{ duration: 0.3 }}
+      variants={variants}
+      className={styles.wrapper}
+    >
+      <p>Select tags</p>
+      <form className={styles.tagsform}>
+        {tags.map((tag, index) => (
+          <motion.div
+            key={index}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.5 }}
+            variants={inputVariants}
+          >
+            <select
+              onChange={(e) => changeTag(index, e)}
+              defaultValue={tag.tag}
             >
-              <input
-                list="taglist"
-                onChange={(e) => changeTag(index, e)}
-                name="tag"
-                defaultValue={tag.tag}
-              />
-              <datalist id="taglist">
-                {Tags.map((tag) => (
-                  <option value={tag} key={tag}>
-                    {tag}
-                  </option>
-                ))}
-              </datalist>
-            </motion.div>
-          ))}
-          <button className={styles.addbtn} onClick={addTag}>
-            +
+              <option>Select a tag</option>
+              {Tags.map((tag) => (
+                <option value={tag} key={tag}>
+                  {tag}
+                </option>
+              ))}
+            </select>
+          </motion.div>
+        ))}
+        <button className={styles.addbtn} onClick={addTag}>
+          +
+        </button>
+        {tags[1] && (
+          <button className={styles.rmbtn} onClick={removeTag}>
+            -
           </button>
-          {tags[1] && (
-            <button className={styles.rmbtn} onClick={removeTag}>
-              -
-            </button>
-          )}
-          <button className={styles.submitbtn} onClick={submitTags}>
-            Apply
-          </button>
-        </form>
-      </motion.div>
+        )}
+        <button className={styles.submitbtn} onClick={submitTags}>
+          Apply
+        </button>
+      </form>
+    </motion.div>
   );
 }

@@ -101,7 +101,7 @@ export default function NewRecipeForm() {
       );
       setStepFields(recipe.steps.map((step) => ({ step: step })));
       if (recipe.tags) {
-        setTagFields(recipe.tags.map(tag => ({tag: tag})));
+        setTagFields(recipe.tags.map((tag) => ({ tag: tag })));
       }
     });
   }
@@ -242,18 +242,17 @@ export default function NewRecipeForm() {
           {tagFields &&
             tagFields.map((input, index) => (
               <>
-                <input
+                <select
                   list="tags"
                   name="tag"
                   onChange={(e) => tagChange(index, e)}
                   defaultValue={input.tag}
-                ></input>
-                <datalist className={styles.tag} id="tags" key={index}>
+                >
                   <option></option>
                   {Tags.map((tag) => (
                     <option>{tag}</option>
                   ))}
-                </datalist>
+                </select>
               </>
             ))}
         </div>

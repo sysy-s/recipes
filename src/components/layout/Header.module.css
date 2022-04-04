@@ -18,18 +18,25 @@
 }
 
 .tagbtn {
-  background-color: rgba(100,172,139,1);
-  border: 3px solid white;
+  background-color: inherit;
+  border: none;
   padding: 5px;
-  font-size: 20px;
+  font-size: 24px;
   border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   color: white;
+  border: 3px solid white;
   transition: background-color 200ms ease-in-out;
   margin: 2px;
 }
 
 .tagbtn:hover {
   background-color: rgba(195,237,175,0.3);
+}
+
+.clearbtn {
+  background-color: rgba(195,237,175,0.4);
 }
 
 .tagfield {

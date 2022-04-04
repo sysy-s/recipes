@@ -59,13 +59,13 @@ export default function Header(props) {
               {tagsApplied[0] && (
                 <button
                   onClick={(e) => setTagsApplied([])}
-                  className={styles.tagbtn}
+                  className={`${styles.tagbtn} ${styles.clearbtn}`}
                 >
                   Clear tags
                 </button>
               )}
               <button className={styles.tagbtn} onClick={showHideTags}>
-                {tagsVisibility ? "Cancel" : "Filter with tags"}
+                {tagsVisibility ? "Cancel" : "Filter"}
               </button>
             </>
           )}
@@ -75,6 +75,7 @@ export default function Header(props) {
                 isOpen={tagsVisibility}
                 onRequestClose={(e) => setTagsVisibility(false)}
                 closeTimeoutMS={200}
+                ariaHideApp={false}
                 className={styles.modal}
               >
                   <TagSelect />

@@ -7,7 +7,7 @@
     box-shadow: 0px 0px 15px rgba(0.1, 0.1, 0.1, 0.3);
 }
 
-.tagsform input {
+.tagsform select {
     padding: 10px;
     font-size: 20px;
     font-family: inherit;
