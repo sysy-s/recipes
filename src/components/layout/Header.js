@@ -39,18 +39,20 @@ export default function Header(props) {
         </Link>
       </div>
       <div className={styles.searchbar}>
-        <form>
-          <input
-            type="text"
-            className={styles.search}
-            placeholder="Search..."
-            name="search"
-            ref={searchRef}
-          />
-          <button onClick={searchSubmit} className={styles.btn}>
-            Search
-          </button>
-        </form>
+        {props.list && (
+          <form>
+            <input
+              type="text"
+              className={styles.search}
+              placeholder="Search..."
+              name="search"
+              ref={searchRef}
+            />
+            <button onClick={searchSubmit} className={styles.btn}>
+              Search
+            </button>
+          </form>
+        )}
       </div>
       <div className={styles.right}>
         <div className={styles.tags}>
@@ -78,7 +80,7 @@ export default function Header(props) {
                 ariaHideApp={false}
                 className={styles.modal}
               >
-                  <TagSelect />
+                <TagSelect />
               </ReactModal>
             )}
           </AnimatePresence>

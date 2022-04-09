@@ -13,7 +13,6 @@
 
 .title {
     padding-bottom: 15px;
-    margin-top: 8px;
     font-weight: 300;
 }
 
@@ -21,6 +20,12 @@
     width: 100%;
     float: right;
     border-radius: 10px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 @media (max-width: 800px) {

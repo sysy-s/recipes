@@ -41,6 +41,7 @@ export default function RecipeList() {
             id={recipe._id}
             title={recipe.title}
             image={recipe.image}
+            difficulty={recipe.difficulty}
             className={styles.recipe}
           />
         ))}

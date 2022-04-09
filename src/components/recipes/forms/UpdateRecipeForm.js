@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Tags } from "../../Tags";
 
 import styles from "./NewRecipeForm.module.css";
+import { Rating } from "react-simple-star-rating";
 
 export default function NewRecipeForm() {
   const nav = useNavigate();
@@ -23,7 +24,12 @@ export default function NewRecipeForm() {
     tags: [],
   });
   const [image, setImage] = useState();
+  const [difficulty, setDifficulty] = useState(1);
   const [message, setMessage] = useState("");
+
+  const diffChange = (diff) => {
+    setDifficulty(diff/20);
+  };
 
   function imageChange(e) {
     setImage(e.target.files[0]);
@@ -80,13 +86,12 @@ export default function NewRecipeForm() {
   function postForm(data) {
     axios({
       url: `${API}/recipes/${params.id}`,
-      method: "put",
+      method: "patch",
       data: data,
       headers: { "Content-type": "multipart/form-data" },
     })
       .then((res) => {
-        const id = res.data._id;
-        nav(`/admin/${id}`);
+        nav(`/admin/${params.id}`);
       })
       .catch(() => setMessage("Invalid file type"));
   }
@@ -95,7 +100,6 @@ export default function NewRecipeForm() {
     axios.get(`${API}/recipes/${params.id}`).then((res) => {
       const recipe = res.data;
       setRecipeData(recipe);
-      console.log(recipeData);
       setIngredientFields(
         recipe.ingredients.map((ingredient) => ({ ingredient: ingredient }))
       );
@@ -103,6 +107,7 @@ export default function NewRecipeForm() {
       if (recipe.tags) {
         setTagFields(recipe.tags.map((tag) => ({ tag: tag })));
       }
+      setDifficulty(recipe.difficulty);
     });
   }
 
@@ -112,52 +117,39 @@ export default function NewRecipeForm() {
     const steps = stepFields.map((field) => field.step);
     const tags = tagFields.map((field) => field.tag);
     const title = titleRef.current.value;
-    let errorOccured = false;
 
     // creates form and fills it with fields
     let formData = new FormData();
 
     if (title) {
       formData.append("title", title);
-    } else {
-      errorOccured = true;
     }
 
     ingredients.forEach((ingredient) => {
       if (ingredient) {
         formData.append("ingredients", ingredient);
-      } else {
-        errorOccured = true;
       }
     });
 
     steps.forEach((step) => {
       if (step) {
         formData.append("steps", step);
-      } else {
-        errorOccured = true;
       }
     });
 
     if (image) {
       formData.append("image", image);
-    } else {
-      errorOccured = true;
     }
 
     tags.forEach((tag) => {
       if (tag) {
         formData.append("tags", tag);
-      } else {
-        errorOccured = true;
       }
     });
 
-    if (!errorOccured) {
-      postForm(formData);
-    } else {
-      setMessage("Some fields are still empty");
-    }
+    formData.append("difficulty", difficulty);
+
+    postForm(formData);
   }
 
   useEffect(() => {
@@ -236,6 +228,9 @@ export default function NewRecipeForm() {
           className={styles.imageinput}
           onChange={imageChange}
         />
+
+        <label htmlFor="difficulty">Difficulty</label>
+        <Rating name="difficulty" onClick={diffChange} initialValue={difficulty} />
 
         <label htmlFor="tags">Tags (optional)</label>
         <div className={styles.tags}>

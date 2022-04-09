@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Tags } from "../../Tags";
 
 import styles from "./NewRecipeForm.module.css";
+import { Rating } from "react-simple-star-rating";
 
 export default function NewRecipeForm() {
   const nav = useNavigate();
@@ -16,6 +17,12 @@ export default function NewRecipeForm() {
   const [stepFields, setStepFields] = useState([{ step: "" }]);
   const [tagFields, setTagFields] = useState([]);
   const [message, setMessage] = useState("");
+  const [difficulty, setDifficulty] = useState(1);
+
+  const diffChange = (diff) => {
+    setDifficulty(diff/20);
+    console.log(`Difficulty is: ${difficulty}`);
+  };
 
   function imageChange(e) {
     setImage(e.target.files[0]);
@@ -78,6 +85,7 @@ export default function NewRecipeForm() {
     })
       .then((res) => {
         const id = res.data._id;
+        console.log(res);
         nav(`/admin/${id}`);
       })
       .catch(() => setMessage("Invalid file type"));
@@ -129,6 +137,8 @@ export default function NewRecipeForm() {
         errorOccured = true;
       }
     });
+
+    formData.append('difficulty', difficulty);
 
     if (!errorOccured) {
       postForm(formData);
@@ -205,6 +215,13 @@ export default function NewRecipeForm() {
           onChange={imageChange}
         />
         <br />
+        <label htmlFor="difficulty">Difficulty</label>
+        <Rating
+          name="difficulty"
+          onClick={diffChange}
+          initialValue={1}
+        />
+
         <label htmlFor="tags">Tags (optional)</label>
         <div className={styles.tags}>
           {tagFields &&

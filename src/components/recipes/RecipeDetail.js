@@ -3,6 +3,7 @@ import { API } from "../../Api";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./RecipeDetail.module.css";
+import { Rating } from "react-simple-star-rating";
 
 export default function RecipeDetail(props) {
   const nav = useNavigate();
@@ -44,7 +45,19 @@ export default function RecipeDetail(props) {
             />
           </div>
           <h1>{recipe.title}</h1>
+          <div className={styles.rating}>
+            <p>Difficulty</p>
+            <Rating readonly={true} initialValue={recipe.difficulty} />
+          </div>
           <hr />
+          {recipe.description && (
+            <>
+              <h3>Description and tips</h3>
+              <p>{recipe.description}</p>
+              <hr />
+            </>
+          )}
+
           <h3>Ingredients</h3>
           <ul>
             {recipe.ingredients.map((ingredient) => (

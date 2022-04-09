@@ -34,6 +34,21 @@
 
 }
 
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.rating > * {
+    margin-right: 10px;
+}
+
 .upbtn:hover, .delbtn:hover {
     transform: translateY(-10px);
 }
+
+@media (max-width: 500px) {
+    .rating > * {
+        margin: auto;
+    }
+  }
