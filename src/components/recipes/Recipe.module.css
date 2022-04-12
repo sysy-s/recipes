@@ -18,14 +18,17 @@
 
 .thumbnail {
     width: 100%;
-    float: right;
     border-radius: 10px;
 }
 
 .info {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+}
+
+.difficulty {
+    margin-top: -40px;
+    padding: 0;
 }
 
 @media (max-width: 800px) {

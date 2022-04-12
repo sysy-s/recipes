@@ -13,7 +13,6 @@ export default function TagSelect() {
   function addTag(e) {
     e.preventDefault();
     setTags([...tags, { tag: "" }]);
-    console.log(tags);
   }
 
   function removeTag(e) {

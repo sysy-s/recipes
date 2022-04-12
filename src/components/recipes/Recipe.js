@@ -30,7 +30,7 @@ export default function Recipe(props) {
         <div>
           <h1 className={styles.title}>{props.title}</h1>
         </div>
-        <div>
+        <div className={styles.difficulty}>
           <div>Difficulty</div>
           <Rating readonly={true} initialValue={props.difficulty} />
         </div>

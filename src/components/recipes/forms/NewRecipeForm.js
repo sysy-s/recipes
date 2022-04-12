@@ -10,6 +10,9 @@ import { Rating } from "react-simple-star-rating";
 export default function NewRecipeForm() {
   const nav = useNavigate();
   const titleRef = useRef();
+  const descriptionRef = useRef();
+  const servingsRef = useRef();
+  const prepRef = useRef();
   const [image, setImage] = useState();
   const [ingredientFields, setIngredientFields] = useState([
     { ingredient: "" },
@@ -97,7 +100,10 @@ export default function NewRecipeForm() {
     const steps = stepFields.map((field) => field.step);
     const tags = tagFields.map((field) => field.tag);
     const title = titleRef.current.value;
-    let errorOccured = false;
+    const description = descriptionRef.current.value;
+    const servings = servingsRef.current.value;
+    const prep = prepRef.current.value;
+    let fieldMissing = false;
 
     // creates form and fills it with fields
     let formData = new FormData();
@@ -105,14 +111,30 @@ export default function NewRecipeForm() {
     if (title) {
       formData.append("title", title);
     } else {
-      errorOccured = true;
+      fieldMissing = true;
+    }
+
+    if (description) {
+      formData.append("description", description);
+    }
+
+    if (servings) {
+      formData.append("title", title);
+    } else {
+      fieldMissing = true;
+    }
+
+    if (prep) {
+      formData.append("title", title);
+    } else {
+      fieldMissing = true;
     }
 
     ingredients.forEach((ingredient) => {
       if (ingredient) {
         formData.append("ingredients", ingredient);
       } else {
-        errorOccured = true;
+        fieldMissing = true;
       }
     });
 
@@ -120,27 +142,27 @@ export default function NewRecipeForm() {
       if (step) {
         formData.append("steps", step);
       } else {
-        errorOccured = true;
+        fieldMissing = true;
       }
     });
 
     if (image) {
       formData.append("image", image);
     } else {
-      errorOccured = true;
+      fieldMissing = true;
     }
 
     tags.forEach((tag) => {
       if (tag) {
         formData.append("tags", tag);
       } else {
-        errorOccured = true;
+        fieldMissing = true;
       }
     });
 
     formData.append('difficulty', difficulty);
 
-    if (!errorOccured) {
+    if (!fieldMissing) {
       postForm(formData);
     } else {
       setMessage("Some fields are still empty");
@@ -157,6 +179,15 @@ export default function NewRecipeForm() {
         <h1>New Recipe</h1>
         <label htmlFor="title">Title</label>
         <input type="text" name="title" ref={titleRef} />
+
+        <label htmlFor="description">Description (optional)</label>
+        <textarea type="text" name="description" ref={descriptionRef} />
+
+        <label>Servings</label>
+        <input type="number" ref={servingsRef}/>
+
+        <label>Prep time</label>
+        <input type="text" ref={prepRef}/>
 
         <label htmlFor="ingredient">Ingredients</label>
         <div className={styles.ingredients}>

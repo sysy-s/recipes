@@ -14,9 +14,16 @@
 
 @media (max-width: 1000px) {
     .wrapper {
+        width: 70%;
+    }
+}
+
+@media (max-width: 600px) {
+    .wrapper {
         box-sizing: border-box;
         margin: 0;
         width: 100%;
         box-shadow: none;
+        border-radius: 0px;
     }
 }
