@@ -9,4 +9,4 @@ app.use(express.static(path.join(__dirname, "build")));
 // This route serves the React app
 app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, "build", "index.html")));
 
-app.listen(port, () => console.log(`Server listening on port ${port}`));
+app.listen(process.env.PORT || port, () => console.log(`Server listening on port ${port}`));
