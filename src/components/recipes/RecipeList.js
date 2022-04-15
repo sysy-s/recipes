@@ -36,14 +36,19 @@ export default function RecipeList() {
     <>
       {recipes &&
         recipes.map((recipe) => (
-          <Recipe
-            key={recipe._id}
-            id={recipe._id}
-            title={recipe.title}
-            image={recipe.image}
-            difficulty={recipe.difficulty}
-            className={styles.recipe}
-          />
+          <>
+            <Recipe
+              key={recipe._id}
+              id={recipe._id}
+              title={recipe.title}
+              image={recipe.image}
+              difficulty={recipe.difficulty}
+              prepTime={recipe.prepTime}
+              servings={recipe.servings}
+              className={styles.recipe}
+            />
+            <hr />
+          </>
         ))}
       {(!recipes.length || false) && (
         <h1 className={styles.blank}>Sadly no recipe match your search.</h1>

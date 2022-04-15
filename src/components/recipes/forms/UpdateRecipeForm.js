@@ -11,6 +11,9 @@ export default function NewRecipeForm() {
   const nav = useNavigate();
   const params = useParams();
   const titleRef = useRef();
+  const descriptionRef = useRef();
+  const servingsRef = useRef();
+  const prepRef = useRef();
   const [ingredientFields, setIngredientFields] = useState([
     { ingredient: "" },
   ]);
@@ -28,7 +31,7 @@ export default function NewRecipeForm() {
   const [message, setMessage] = useState("");
 
   const diffChange = (diff) => {
-    setDifficulty(diff/20);
+    setDifficulty(diff / 20);
   };
 
   function imageChange(e) {
@@ -91,7 +94,7 @@ export default function NewRecipeForm() {
       headers: { "Content-type": "multipart/form-data" },
     })
       .then((res) => {
-        nav(`/admin/${params.id}`);
+        nav(`/${params.id}`);
       })
       .catch(() => setMessage("Invalid file type"));
   }
@@ -117,12 +120,27 @@ export default function NewRecipeForm() {
     const steps = stepFields.map((field) => field.step);
     const tags = tagFields.map((field) => field.tag);
     const title = titleRef.current.value;
+    const description = descriptionRef.current.value;
+    const servings = servingsRef.current.value;
+    const prep = prepRef.current.value;
 
     // creates form and fills it with fields
     let formData = new FormData();
 
     if (title) {
       formData.append("title", title);
+    }
+
+    if (description) {
+      formData.append("description", description);
+    }
+
+    if (servings) {
+      formData.append("servings", servings);
+    }
+
+    if (prep) {
+      formData.append("prepTime", prep);
     }
 
     ingredients.forEach((ingredient) => {
@@ -169,6 +187,20 @@ export default function NewRecipeForm() {
           ref={titleRef}
           defaultValue={recipeData.title}
         />
+
+        <label htmlFor="description">Description (optional)</label>
+        <textarea
+          type="text"
+          name="description"
+          ref={descriptionRef}
+          defaultValue={recipeData.description ? recipeData.description : ""}
+        />
+
+        <label>Servings</label>
+        <input type="text" ref={servingsRef} defaultValue={recipeData.servings} />
+
+        <label>Prep time</label>
+        <input type="text" ref={prepRef} defaultValue={recipeData.prepTime} />
 
         <label htmlFor="ingredient">Ingredients</label>
         <div className={styles.ingredients}>
@@ -230,7 +262,11 @@ export default function NewRecipeForm() {
         />
 
         <label htmlFor="difficulty">Difficulty</label>
-        <Rating name="difficulty" onClick={diffChange} initialValue={difficulty} />
+        <Rating
+          name="difficulty"
+          onClick={diffChange}
+          initialValue={difficulty}
+        />
 
         <label htmlFor="tags">Tags (optional)</label>
         <div className={styles.tags}>

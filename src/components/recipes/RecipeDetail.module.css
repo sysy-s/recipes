@@ -4,6 +4,10 @@
     margin-top: 15px;
 }
 
+h1 {
+    font-weight: 300;
+}
+
 .image {
     width: 100%;
     border-radius: 10px;
@@ -46,9 +50,3 @@
 .upbtn:hover, .delbtn:hover {
     transform: translateY(-10px);
 }
-
-@media (max-width: 500px) {
-    .rating > * {
-        margin: auto;
-    }
-  }

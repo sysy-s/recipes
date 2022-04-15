@@ -6,6 +6,7 @@ import { TagsContext } from "../TagsContext";
 import TagSelect from "../tags/TagSelect";
 import { AnimatePresence } from "framer-motion";
 import ReactModal from "react-modal";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Header(props) {
   const nav = useNavigate();
@@ -13,6 +14,7 @@ export default function Header(props) {
   const searchRef = useRef();
   const { setSearchQuery } = useContext(SearchContext);
   const { tagsApplied, setTagsApplied } = useContext(TagsContext);
+  const { isAuthenticated } = useAuth0();
 
   function searchSubmit(e) {
     e.preventDefault();
@@ -32,14 +34,14 @@ export default function Header(props) {
     <div className={styles.wrapper}>
       <div className={styles.logo}>
         <Link
-          to={props.admin ? "/admin" : "/"}
-          onClick={(e) => setSearchQuery("")}
+          to="/"
+          onClick={() => setSearchQuery("")}
         >
           Logo
         </Link>
       </div>
-      <div className={styles.searchbar}>
-        {props.list && (
+      {props.list && (
+        <div className={styles.searchbar}>
           <form>
             <input
               type="text"
@@ -52,47 +54,81 @@ export default function Header(props) {
               Search
             </button>
           </form>
-        )}
-      </div>
-      <div className={styles.right}>
-        <div className={styles.tags}>
-          {props.list && (
+        </div>
+      )}
+      {props.list && !isAuthenticated && (
+        <div className={styles.right}>
+          <div className={styles.tags}>
             <>
               {tagsApplied[0] && (
                 <button
                   onClick={(e) => setTagsApplied([])}
                   className={`${styles.tagbtn} ${styles.clearbtn}`}
                 >
-                  Clear tags
+                  Clear
                 </button>
               )}
               <button className={styles.tagbtn} onClick={showHideTags}>
                 {tagsVisibility ? "Cancel" : "Filter"}
               </button>
             </>
-          )}
-          <AnimatePresence>
-            {tagsVisibility && (
-              <ReactModal
-                isOpen={tagsVisibility}
-                onRequestClose={(e) => setTagsVisibility(false)}
-                closeTimeoutMS={200}
-                ariaHideApp={false}
-                className={styles.modal}
-              >
-                <TagSelect />
-              </ReactModal>
-            )}
-          </AnimatePresence>
+            <AnimatePresence>
+              {tagsVisibility && (
+                <ReactModal
+                  isOpen={tagsVisibility}
+                  onRequestClose={(e) => setTagsVisibility(false)}
+                  closeTimeoutMS={200}
+                  ariaHideApp={false}
+                  className={styles.modal}
+                >
+                  <TagSelect />
+                </ReactModal>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-        {props.admin && (
+      )}
+
+      {isAuthenticated && (
+        <div className={styles.right}>
+          {props.list && (
+            <div className={styles.tags}>
+              <>
+                {tagsApplied[0] && (
+                  <button
+                    onClick={(e) => setTagsApplied([])}
+                    className={`${styles.tagbtn} ${styles.clearbtn}`}
+                  >
+                    Clear
+                  </button>
+                )}
+                <button className={styles.tagbtn} onClick={showHideTags}>
+                  {tagsVisibility ? "Cancel" : "Filter"}
+                </button>
+              </>
+              <AnimatePresence>
+                {tagsVisibility && (
+                  <ReactModal
+                    isOpen={tagsVisibility}
+                    onRequestClose={(e) => setTagsVisibility(false)}
+                    closeTimeoutMS={200}
+                    ariaHideApp={false}
+                    className={styles.modal}
+                  >
+                    <TagSelect />
+                  </ReactModal>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
           <>
             <div>
-              <Link to="/admin/add">New Recipe</Link>
+              <Link to="/add">New Recipe</Link>
             </div>
           </>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

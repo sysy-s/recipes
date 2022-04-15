@@ -4,8 +4,9 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./RecipeDetail.module.css";
 import { Rating } from "react-simple-star-rating";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function RecipeDetail(props) {
+export default function RecipeDetail() {
   const nav = useNavigate();
   const [recipe, setRecipe] = useState({
     title: "",
@@ -14,6 +15,7 @@ export default function RecipeDetail(props) {
     image: "",
   });
   const params = useParams();
+  const { isAuthenticated } = useAuth0();
 
   function getRecipe() {
     axios.get(`${API}/recipes/${params.id}`).then((res) => {
@@ -49,15 +51,20 @@ export default function RecipeDetail(props) {
             <p>Difficulty</p>
             <Rating readonly={true} initialValue={recipe.difficulty} />
           </div>
+          <div>
+            Servings: <strong>{recipe.servings}</strong>
+          </div>
+          <div>
+            Preparation time: <strong>{recipe.prepTime}</strong>
+          </div>
           <hr />
           {recipe.description && (
             <>
-              <h3>Description and tips</h3>
+              <h3>Description</h3>
               <p>{recipe.description}</p>
               <hr />
             </>
           )}
-
           <h3>Ingredients</h3>
           <ul>
             {recipe.ingredients.map((ingredient) => (
@@ -71,18 +78,18 @@ export default function RecipeDetail(props) {
               <li key={step.substring(0, 5)}>{step}</li>
             ))}
           </ol>
-          {props.admin && (
-            <>
-              <button className={styles.delbtn} onClick={deleteRecipe}>
-                Delete
-              </button>
-              <button
-                className={styles.upbtn}
-                onClick={(e) => nav(`/admin/${params.id}/update`)}
-              >
-                Update
-              </button>
-            </>
+          {isAuthenticated && (
+          <>
+            <button className={styles.delbtn} onClick={deleteRecipe}>
+              Delete
+            </button>
+            <button
+              className={styles.upbtn}
+              onClick={(e) => nav(`/${params.id}/update`)}
+            >
+              Update
+            </button>
+          </>
           )}
         </>
       )}

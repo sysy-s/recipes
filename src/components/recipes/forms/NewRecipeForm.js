@@ -23,7 +23,7 @@ export default function NewRecipeForm() {
   const [difficulty, setDifficulty] = useState(1);
 
   const diffChange = (diff) => {
-    setDifficulty(diff/20);
+    setDifficulty(diff / 20);
     console.log(`Difficulty is: ${difficulty}`);
   };
 
@@ -89,7 +89,7 @@ export default function NewRecipeForm() {
       .then((res) => {
         const id = res.data._id;
         console.log(res);
-        nav(`/admin/${id}`);
+        nav(`/${id}`);
       })
       .catch(() => setMessage("Invalid file type"));
   }
@@ -119,13 +119,13 @@ export default function NewRecipeForm() {
     }
 
     if (servings) {
-      formData.append("title", title);
+      formData.append("servings", servings);
     } else {
       fieldMissing = true;
     }
 
     if (prep) {
-      formData.append("title", title);
+      formData.append("prepTime", prep);
     } else {
       fieldMissing = true;
     }
@@ -160,7 +160,7 @@ export default function NewRecipeForm() {
       }
     });
 
-    formData.append('difficulty', difficulty);
+    formData.append("difficulty", difficulty);
 
     if (!fieldMissing) {
       postForm(formData);
@@ -178,16 +178,21 @@ export default function NewRecipeForm() {
       <form method="post" className={styles.recipeform}>
         <h1>New Recipe</h1>
         <label htmlFor="title">Title</label>
-        <input type="text" name="title" ref={titleRef} />
+        <input type="text" name="title" ref={titleRef} placeholder="Try to think of a catchy one"/>
 
         <label htmlFor="description">Description (optional)</label>
-        <textarea type="text" name="description" ref={descriptionRef} />
+        <textarea
+          type="text"
+          name="description"
+          ref={descriptionRef}
+          placeholder="Say something about this recipe"
+        />
 
         <label>Servings</label>
-        <input type="number" ref={servingsRef}/>
+        <input type="text" ref={servingsRef} placeholder="ex: 3-4 or 4" />
 
         <label>Prep time</label>
-        <input type="text" ref={prepRef}/>
+        <input type="text" ref={prepRef} placeholder="ex: 1h15min or 45min" />
 
         <label htmlFor="ingredient">Ingredients</label>
         <div className={styles.ingredients}>
@@ -247,11 +252,7 @@ export default function NewRecipeForm() {
         />
         <br />
         <label htmlFor="difficulty">Difficulty</label>
-        <Rating
-          name="difficulty"
-          onClick={diffChange}
-          initialValue={1}
-        />
+        <Rating name="difficulty" onClick={diffChange} initialValue={1} />
 
         <label htmlFor="tags">Tags (optional)</label>
         <div className={styles.tags}>

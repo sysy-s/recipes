@@ -30,8 +30,13 @@ export default function Recipe(props) {
         <div>
           <h1 className={styles.title}>{props.title}</h1>
         </div>
+        <div className={styles.moreinfo}>
+          <div>Preparation time: <strong>{props.prepTime}</strong></div>
+          <div>Servings: <strong>{props.servings}</strong></div>
+        </div>
         <div className={styles.difficulty}>
           <div>Difficulty</div>
+          <br />
           <Rating readonly={true} initialValue={props.difficulty} />
         </div>
       </div>

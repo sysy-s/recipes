@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import NewRecipeForm from "./components/recipes/forms/NewRecipeForm";
 import RecipeDetail from "./components/recipes/RecipeDetail";
@@ -7,8 +7,20 @@ import UpdateRecipeForm from "./components/recipes/forms/UpdateRecipeForm";
 import SearchProvider from "./components/Context";
 import TagsProvider from "./components/TagsContext";
 import TagSelect from "./components/tags/TagSelect";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginButton from "./components/auth0/Login";
+import LogoutButton from './components/auth0/Logout';
 
 function App() {
+  const { user, isAuthenticated } = useAuth0();
+
+  const ProtectedRoute = ({ auth, children }) => {
+    if (!auth) {
+      return <Navigate to="/" replace />;
+    }
+    return children;
+  };
+
   return (
     <TagsProvider>
       <SearchProvider>
@@ -16,48 +28,42 @@ function App() {
           <Route
             path="/admin"
             element={
-              <Layout admin={true} list={true}>
-                <RecipeList admin={true} />
-              </Layout>
+              !isAuthenticated ? <LoginButton /> : <LogoutButton />
             }
           />
           <Route
-            path="/admin/add"
+            path="/add"
             element={
-              <Layout admin={true}>
-                <NewRecipeForm admin={true} />
-              </Layout>
+              <ProtectedRoute auth={isAuthenticated}>
+                <Layout>
+                  <NewRecipeForm />
+                </Layout>
+              </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/:id"
+            path="/:id/update"
             element={
-              <Layout admin={true}>
-                <RecipeDetail admin={true} />
-              </Layout>
-            }
-          />
-          <Route
-            path="/admin/:id/update"
-            element={
-              <Layout admin={true}>
-                <UpdateRecipeForm admin={true} />
-              </Layout>
+              <ProtectedRoute auth={isAuthenticated}>
+                <Layout>
+                  <UpdateRecipeForm />
+                </Layout>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/"
             element={
-              <Layout admin={false} list={true}>
-                <RecipeList admin={false} />
+              <Layout list={true}>
+                <RecipeList />
               </Layout>
             }
           />
           <Route
             path="/:id"
             element={
-              <Layout admin={false}>
-                <RecipeDetail admin={false} />
+              <Layout>
+                <RecipeDetail />
               </Layout>
             }
           />

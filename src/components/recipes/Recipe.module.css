@@ -28,7 +28,10 @@
 
 .difficulty {
     margin-top: -40px;
-    padding: 0;
+}
+
+.difficulty * {
+    float: right;
 }
 
 @media (max-width: 800px) {
