@@ -24,7 +24,6 @@ export default function NewRecipeForm() {
 
   const diffChange = (diff) => {
     setDifficulty(diff / 20);
-    console.log(`Difficulty is: ${difficulty}`);
   };
 
   function imageChange(e) {
@@ -88,7 +87,6 @@ export default function NewRecipeForm() {
     })
       .then((res) => {
         const id = res.data._id;
-        console.log(res);
         nav(`/${id}`);
       })
       .catch(() => setMessage("Invalid file type"));

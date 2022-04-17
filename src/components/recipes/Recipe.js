@@ -9,14 +9,10 @@ export default function Recipe(props) {
     return nav(`${props.id}`);
   }
 
-  function redirectAdmin() {
-    return nav(`/admin/${props.id}`);
-  }
-
   return (
     <div
       className={styles.wrapper}
-      onClick={props.admin ? redirectAdmin : redirect}
+      onClick={redirect}
       id={props.id}
     >
       <div className={styles.imagewrapper}>

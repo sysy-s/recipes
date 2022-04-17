@@ -22,7 +22,6 @@ export default function RecipeList() {
         query = query + "&tags[]=" + tag.replace(" ", "%20");
       });
     }
-    console.log(query);
     axios.get(`${API}/recipes/all${query}`).then((res) => {
       setRecipes(res.data);
     });
