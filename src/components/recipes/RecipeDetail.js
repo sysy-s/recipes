@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API } from "../../Api";
+import { API, AWS } from "../../Conns";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./RecipeDetail.module.css";
@@ -41,7 +41,7 @@ export default function RecipeDetail() {
         <>
           <div className={styles.imagewrapper}>
             <img
-              src={`${API}/${recipe.image}`}
+              src={`${AWS}/${recipe.image}`}
               className={styles.image}
               alt=""
             />

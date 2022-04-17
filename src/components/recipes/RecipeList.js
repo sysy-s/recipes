@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { API } from "../../Api";
+import { API } from "../../Conns";
 import Recipe from "./Recipe";
 import { SearchContext } from "../Context";
 import { TagsContext } from "../TagsContext";

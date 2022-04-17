@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { API } from "../../../Api";
+import { API } from "../../../Conns";
 import { useNavigate } from "react-router-dom";
 import { Tags } from "../../Tags";
 

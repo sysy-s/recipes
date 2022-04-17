@@ -1,4 +1,4 @@
-import { API } from "../../Api";
+import { AWS } from "../../Conns";
 import styles from "./Recipe.module.css";
 import { useNavigate } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
@@ -21,7 +21,7 @@ export default function Recipe(props) {
     >
       <div className={styles.imagewrapper}>
         <img
-          src={`${API}/${props.image}`}
+          src={`${AWS}/${props.image}`}
           className={styles.thumbnail}
           alt=""
         />
