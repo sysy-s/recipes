@@ -35,8 +35,9 @@ export default function RecipeList() {
 
   return (
     <>
-    {loading && <div className="loader">Loading...</div>}
-      {!loading && recipes &&
+      {loading && <div className="loader">Loading...</div>}
+      {!loading &&
+        recipes &&
         recipes.map((recipe) => (
           <>
             <Recipe

@@ -12,17 +12,22 @@ export default function Header(props) {
   const nav = useNavigate();
   const [tagsVisibility, setTagsVisibility] = useState(false);
   const searchRef = useRef();
-  const { setSearchQuery } = useContext(SearchContext);
+  const { searchQuery, setSearchQuery } = useContext(SearchContext);
   const { tagsApplied, setTagsApplied } = useContext(TagsContext);
   const { isAuthenticated } = useAuth0();
 
   function searchSubmit(e) {
     e.preventDefault();
     setSearchQuery(searchRef.current.value);
-    return props.admin ? nav("/admin") : nav("/");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+    return nav("/");
   }
 
-  function showHideTags(e) {
+  function showHideTags() {
     setTagsVisibility(!tagsVisibility);
   }
 
@@ -31,67 +36,44 @@ export default function Header(props) {
   }, [tagsApplied]);
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.logo}>
-        <Link
-          to="/"
-          onClick={() => setSearchQuery("")}
-        >
-          Logo
-        </Link>
-      </div>
-      {props.list && (
-        <div className={styles.searchbar}>
-          <form>
-            <input
-              type="text"
-              className={styles.search}
-              placeholder="Search..."
-              name="search"
-              ref={searchRef}
-            />
-            <button onClick={searchSubmit} className={styles.btn}>
-              Search
-            </button>
-          </form>
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.logo}>
+          <Link
+            to="/"
+            onClick={() => {
+              setSearchQuery("");
+              if (searchQuery) {
+                searchRef.value = "";
+              }
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              });
+            }}
+          >
+            Logo
+          </Link>
         </div>
-      )}
-      {props.list && !isAuthenticated && (
-        <div className={styles.right}>
-          <div className={styles.tags}>
-            <>
-              {tagsApplied[0] && (
-                <button
-                  onClick={(e) => setTagsApplied([])}
-                  className={`${styles.tagbtn} ${styles.clearbtn}`}
-                >
-                  Clear
-                </button>
-              )}
-              <button className={styles.tagbtn} onClick={showHideTags}>
-                {tagsVisibility ? "Cancel" : "Filter"}
+        {props.list && (
+          <div className={styles.searchbar}>
+            <form>
+              <input
+                type="text"
+                className={styles.search}
+                placeholder="Search..."
+                name="search"
+                ref={searchRef}
+              />
+              <button onClick={searchSubmit} className={styles.btn}>
+                Search
               </button>
-            </>
-            <AnimatePresence>
-              {tagsVisibility && (
-                <ReactModal
-                  isOpen={tagsVisibility}
-                  onRequestClose={(e) => setTagsVisibility(false)}
-                  closeTimeoutMS={200}
-                  ariaHideApp={false}
-                  className={styles.modal}
-                >
-                  <TagSelect />
-                </ReactModal>
-              )}
-            </AnimatePresence>
+            </form>
           </div>
-        </div>
-      )}
-
-      {isAuthenticated && (
-        <div className={styles.right}>
-          {props.list && (
+        )}
+        {props.list && !isAuthenticated && (
+          <div className={styles.right}>
             <div className={styles.tags}>
               <>
                 {tagsApplied[0] && (
@@ -120,15 +102,161 @@ export default function Header(props) {
                 )}
               </AnimatePresence>
             </div>
-          )}
+          </div>
+        )}
+        {isAuthenticated && (
+          <div className={styles.right}>
+            {props.list && (
+              <div className={styles.tags}>
+                <>
+                  {tagsApplied[0] && (
+                    <button
+                      onClick={(e) => setTagsApplied([])}
+                      className={`${styles.tagbtn} ${styles.clearbtn}`}
+                    >
+                      Clear
+                    </button>
+                  )}
+                  <button className={styles.tagbtn} onClick={showHideTags}>
+                    {tagsVisibility ? "Cancel" : "Filter"}
+                  </button>
+                </>
+                <AnimatePresence>
+                  {tagsVisibility && (
+                    <ReactModal
+                      isOpen={tagsVisibility}
+                      onRequestClose={(e) => setTagsVisibility(false)}
+                      closeTimeoutMS={200}
+                      ariaHideApp={false}
+                      className={styles.modal}
+                    >
+                      <TagSelect />
+                    </ReactModal>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
 
-          <>
-            <div>
-              <Link to="/add">New Recipe</Link>
-            </div>
-          </>
+            <>
+              <div>
+                <Link to="/add">New Recipe</Link>
+              </div>
+            </>
+          </div>
+        )}
+      </div>
+
+      {/* below lies the mobielwersion of the header which is modular unlike its predecessor */}
+      <div className={styles.mobilelogo}>
+        <div className={styles.logo}>
+          <Link
+            to="/"
+            onClick={() => {
+              setSearchQuery("");
+              if (searchQuery) {
+                searchRef.value = "";
+              }
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              });
+            }}
+          >
+            Logo
+          </Link>
         </div>
-      )}
-    </div>
+      </div>
+      <div className={styles.mobilesearch}>
+        {props.list && (
+          <div className={styles.searchbar}>
+            <form>
+              <input
+                type="text"
+                className={styles.search}
+                placeholder="Search..."
+                name="search"
+                ref={searchRef}
+              />
+              <button onClick={searchSubmit} className={styles.btn}>
+                Search
+              </button>
+            </form>
+          </div>
+        )}
+        {props.list && !isAuthenticated && (
+          <div className={styles.right}>
+            <div className={styles.tags}>
+              <>
+                {tagsApplied[0] && (
+                  <button
+                    onClick={(e) => setTagsApplied([])}
+                    className={`${styles.tagbtn} ${styles.clearbtn}`}
+                  >
+                    Clear
+                  </button>
+                )}
+                <button className={styles.tagbtn} onClick={showHideTags}>
+                  {tagsVisibility ? "Cancel" : "Filter"}
+                </button>
+              </>
+              <AnimatePresence>
+                {tagsVisibility && (
+                  <ReactModal
+                    isOpen={tagsVisibility}
+                    onRequestClose={(e) => setTagsVisibility(false)}
+                    closeTimeoutMS={200}
+                    ariaHideApp={false}
+                    className={styles.modal}
+                  >
+                    <TagSelect />
+                  </ReactModal>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
+        {isAuthenticated && (
+          <div className={styles.right}>
+            {props.list && (
+              <div className={styles.tags}>
+                <>
+                  {tagsApplied[0] && (
+                    <button
+                      onClick={(e) => setTagsApplied([])}
+                      className={`${styles.tagbtn} ${styles.clearbtn}`}
+                    >
+                      Clear
+                    </button>
+                  )}
+                  <button className={styles.tagbtn} onClick={showHideTags}>
+                    {tagsVisibility ? "Cancel" : "Filter"}
+                  </button>
+                </>
+                <AnimatePresence>
+                  {tagsVisibility && (
+                    <ReactModal
+                      isOpen={tagsVisibility}
+                      onRequestClose={(e) => setTagsVisibility(false)}
+                      closeTimeoutMS={200}
+                      ariaHideApp={false}
+                      className={styles.modal}
+                    >
+                      <TagSelect />
+                    </ReactModal>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            <>
+              <div>
+                <Link to="/add">New Recipe</Link>
+              </div>
+            </>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

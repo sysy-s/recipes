@@ -8,6 +8,10 @@
   z-index: 1000;
 }
 
+.mobilelogo, .mobilesearch {
+  display: none;
+}
+
 .modal {
   z-index: 1000;
   height: 100%;
@@ -117,18 +121,37 @@
 
 @media (max-width: 800px) {
   .wrapper {
+    display: none;
+  }
+
+  .mobilelogo, .mobilesearch {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100vw;
+    background-color: rgba(100,172,139,1);
+  }
+
+  .mobilelogo {
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
   
   .right {
     padding: 0;
   }
 
-  .searchbar form{
-    margin: auto;
+  .searchbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .searchbar form {
+    display: flex;
+    justify-content: center;
+  }
+
+  .search{
+    width: 60%;
   }
 }

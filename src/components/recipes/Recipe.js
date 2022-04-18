@@ -30,6 +30,8 @@ export default function Recipe(props) {
           <div>Preparation time: <strong>{props.prepTime}</strong></div>
           <div>Servings: <strong>{props.servings}</strong></div>
         </div>
+        <br />
+
         <div className={styles.difficulty}>
           <div>Difficulty</div>
           <br />

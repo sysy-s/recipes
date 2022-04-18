@@ -8,12 +8,10 @@ import SearchProvider from "./components/Context";
 import TagsProvider from "./components/TagsContext";
 import TagSelect from "./components/tags/TagSelect";
 import { useAuth0 } from "@auth0/auth0-react";
-import LoginButton from "./components/auth0/Login";
-import LogoutButton from './components/auth0/Logout';
 import Admin from "./components/auth0/Admin";
 
 function App() {
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   const ProtectedRoute = ({ auth, children }) => {
     if (!auth) {
