@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import ReactModal from "react-modal";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function Header(props) {
+export default function HeaderMobile(props) {
   const nav = useNavigate();
   const [tagsVisibility, setTagsVisibility] = useState(false);
   const searchRef = useRef();
@@ -37,7 +37,7 @@ export default function Header(props) {
 
   return (
     <>
-      <div className={styles.wrapper}>
+      <div className={styles.mobilelogo}>
         <div className={styles.logo}>
           <Link
             to="/"
@@ -56,6 +56,8 @@ export default function Header(props) {
             Logo
           </Link>
         </div>
+      </div>
+      <div className={styles.mobilesearch}>
         {props.list && (
           <div className={styles.searchbar}>
             <form>

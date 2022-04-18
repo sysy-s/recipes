@@ -8,9 +8,7 @@
   z-index: 1000;
 }
 
-.mobilelogo, .mobilesearch {
-  display: none;
-}
+
 
 .modal {
   z-index: 1000;
@@ -120,9 +118,6 @@
 }
 
 @media (max-width: 800px) {
-  .wrapper {
-    display: none;
-  }
 
   .mobilelogo, .mobilesearch {
     display: flex;
@@ -132,8 +127,17 @@
 
   .mobilelogo {
     position: sticky;
+    position: -webkit-sticky;
     top: 0;
     z-index: 100;
+  }
+
+  .logo {
+    margin: auto;
+    font-size: 40px;
+    padding: 20px;
+    transition: transform 200ms ease-in-out;
+    text-align: center;
   }
   
   .right {
