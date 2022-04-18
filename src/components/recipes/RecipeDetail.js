@@ -8,6 +8,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function RecipeDetail() {
   const nav = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(false);
   const [recipe, setRecipe] = useState({
     title: "",
     ingredients: [],
@@ -18,16 +20,23 @@ export default function RecipeDetail() {
   const { isAuthenticated } = useAuth0();
 
   function getRecipe() {
-    axios.get(`${API}/recipes/${params.id}`).then((res) => {
-      const recipe = res.data;
-      setRecipe(recipe);
-    });
+    axios
+      .get(`${API}/recipes/${params.id}`)
+      .then((res) => {
+        const recipe = res.data;
+        setRecipe(recipe);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setErr(true);
+      });
   }
 
   function deleteRecipe() {
     axios
       .delete(`${API}/recipes/${params.id}`)
-      .then((res) => nav("/admin"))
+      .then(() => nav("/"))
       .catch(() => nav("/"));
   }
 
@@ -37,7 +46,8 @@ export default function RecipeDetail() {
 
   return (
     <>
-      {recipe.title && (
+      {loading && <div className="loader">Loading</div>}
+      {!loading && !err && (
         <>
           <div className={styles.imagewrapper}>
             <img
@@ -79,23 +89,23 @@ export default function RecipeDetail() {
             ))}
           </ol>
           {isAuthenticated && (
-          <>
-            <button className={styles.delbtn} onClick={deleteRecipe}>
-              Delete
-            </button>
-            <button
-              className={styles.upbtn}
-              onClick={(e) => nav(`/${params.id}/update`)}
-            >
-              Update
-            </button>
-          </>
+            <>
+              <button className={styles.delbtn} onClick={deleteRecipe}>
+                Delete
+              </button>
+              <button
+                className={styles.upbtn}
+                onClick={(e) => nav(`/${params.id}/update`)}
+              >
+                Update
+              </button>
+            </>
           )}
         </>
       )}
-      {!recipe.title && (
+      {err && (
         <div>
-          <h1>Nothing to see here</h1>
+          <h1>This recipe does not exist</h1>
         </div>
       )}
     </>

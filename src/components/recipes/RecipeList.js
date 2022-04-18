@@ -8,6 +8,7 @@ import styles from "./RecipeList.module.css";
 
 export default function RecipeList() {
   const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { searchQuery } = useContext(SearchContext);
   const { tagsApplied } = useContext(TagsContext);
 
@@ -24,6 +25,7 @@ export default function RecipeList() {
     }
     axios.get(`${API}/recipes/all${query}`).then((res) => {
       setRecipes(res.data);
+      setLoading(false);
     });
   }
 
@@ -33,7 +35,8 @@ export default function RecipeList() {
 
   return (
     <>
-      {recipes &&
+    {loading && <div className="loader">Loading...</div>}
+      {!loading && recipes &&
         recipes.map((recipe) => (
           <>
             <Recipe
@@ -49,7 +52,7 @@ export default function RecipeList() {
             <hr />
           </>
         ))}
-      {(!recipes.length || false) && (
+      {!loading && (!recipes.length || false) && (
         <h1 className={styles.blank}>Sadly no recipe match your search.</h1>
       )}
     </>

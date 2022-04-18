@@ -10,6 +10,7 @@ import TagSelect from "./components/tags/TagSelect";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "./components/auth0/Login";
 import LogoutButton from './components/auth0/Logout';
+import Admin from "./components/auth0/Admin";
 
 function App() {
   const { user, isAuthenticated } = useAuth0();
@@ -28,7 +29,7 @@ function App() {
           <Route
             path="/admin"
             element={
-              !isAuthenticated ? <LoginButton /> : <LogoutButton />
+              <Admin />
             }
           />
           <Route
